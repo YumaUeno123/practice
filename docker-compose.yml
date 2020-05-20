@@ -1,0 +1,29 @@
+version: "3"
+services:
+  api:
+    hostname: api
+    image: golang:1.14.0-alpine
+    command: go run cmd/main.go
+    environment:
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: practice
+    working_dir: "/go/src/github.com/YumaUeno123/practice"
+    volumes:
+      - ./:/go/src/github.com/YumaUeno123/practice
+      - ${PRACTICE_GO_PATH}/pkg:/go/pkg
+    ports:
+      - 8080:8080
+  mysql:
+    hostname: mysql
+    image: mysql:5.7.16
+    environment:
+      MYSQL_DATABASE: practice
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - 3306:3306
